@@ -13,6 +13,7 @@
     "bcrypt": "^1.0.3",
     "connect-redis": "^3.3.2",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "finalhandler": "^1.1.0",
     "merge-descriptors": "^1.0.1",
     "moment": "^2.19.2",

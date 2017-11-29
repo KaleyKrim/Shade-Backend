@@ -8,7 +8,7 @@ const authenticatePassport = require('./library/passport');
 const db = require('./models')
 const routes = require('./routes');
 
-const PORT = process.env.PORT || 8080;
+const PORT = require(`../config/${process.env.NODE_ENV}`).PORT;
 const app = express();
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
