@@ -35,6 +35,10 @@ const upload = multer({
 
 router.get('/', (req, res) => {
   return Message.findAll({
+    where: {
+      deletedAt: null,
+      offensive: 0
+    },
     include:[
       { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
       { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
@@ -49,17 +53,12 @@ router.get('/', (req, res) => {
   })
 });
 
-
-//note: key in upload form for media must be upl. like when i'm using postman the file's key has to be 'upl'
-//also note: shader_id will be req.user.id once we can actually log in. otherwise, we can always provide the shader_id in the request body, amiright guys?
-
 router.post('/', upload.array('upl', 1), (req, res) => {
 
   if(req.files[0]){
     Message.create({
       body: req.body.body,
       shader_id: req.body.shader_id,
-      // shader_id: parseInt(req.user.id, 10),
       victim_id: req.body.victim_id,
       media: req.files[0].key
     })
@@ -123,7 +122,6 @@ router.get('/:id', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  //note: gotta add media upload! nah, jk.
   let newInfo = req.body;
   let id = req.params.id;
   //note: newInfo coming in from axios should be an object whose keys match the columns in messages
@@ -155,9 +153,7 @@ router.put('/:id', (req, res) => {
 
 router.put('/:id/vote', (req, res) => {
   const data = req.body;
-  console.log(data);
   const id = req.params.id;
-  console.log(id);
   return Message.findById(id)
   .then((message) => {
     if(data.vote === 'up'){
