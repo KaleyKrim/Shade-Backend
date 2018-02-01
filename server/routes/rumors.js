@@ -31,7 +31,6 @@ router.post('/', (req, res) => {
       ]
     })
     .then((foundRumor) => {
-      console.log(foundRumor);
       return res.json(foundRumor);
     })
     .catch((err) => {
