@@ -4,6 +4,8 @@ Built with:
 
 - Node.js
 - Express.js
+- Sequelize
+- PostgreSQL
 
 ## About Shade
 
