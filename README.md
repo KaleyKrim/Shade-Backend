@@ -23,7 +23,7 @@ https://www.youtube.com/watch?v=sRKQTn9YZPI
 
 ## Currently in Development:
 
-- Flagging feature for offensive content required by App Store
+- Flagging feature for offensive content
 - Optimization
 
 ## To run locally:
