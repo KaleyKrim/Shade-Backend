@@ -8,7 +8,8 @@ module.exports = function (sequelize, DataTypes) {
     victim_id: {type: DataTypes.INTEGER},
     status_id: {type: DataTypes.INTEGER, defaultValue: 1},
     parent_id: {type: DataTypes.INTEGER},
-    deletedAt: {type: DataTypes.DATEONLY, defaultValue: null}
+    deletedAt: {type: DataTypes.DATEONLY, defaultValue: null},
+    offensive: {type: DataTypes.INTEGER, defaultValue: 0}
   }, {
     tableName: 'messages'
   });
