@@ -36,7 +36,8 @@ const upload = multer({
 router.get('/', (req, res) => {
   return Message.findAll({
     where: {
-      deletedAt: null
+      deletedAt: null,
+      offensive: 0
     },
     include:[
       { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
