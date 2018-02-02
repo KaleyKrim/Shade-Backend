@@ -1,15 +1,16 @@
 module.exports = function (sequelize, DataTypes) {
 
   const Message = sequelize.define('message', {
-    body: {type: DataTypes.STRING},
     points: {type: DataTypes.INTEGER, defaultValue: 0},
     media: {type: DataTypes.STRING},
     shader_id: {type: DataTypes.INTEGER, allowNull: false},
     victim_id: {type: DataTypes.INTEGER},
     status_id: {type: DataTypes.INTEGER, defaultValue: 1},
-    parent_id: {type: DataTypes.INTEGER},
     deletedAt: {type: DataTypes.DATEONLY, defaultValue: null},
-    offensive: {type: DataTypes.INTEGER, defaultValue: 0}
+    offensive: {type: DataTypes.INTEGER, defaultValue: 0},
+    flag_one: {type: DataTypes.INTEGER, defaultValue: null},
+    flag_two: {type: DataTypes.INTEGER, defaultValue: null},
+    flag_three: {type: DataTypes.INTEGER, defaultValue: null}
   }, {
     tableName: 'messages'
   });
@@ -27,14 +28,6 @@ module.exports = function (sequelize, DataTypes) {
       foreignKey: 'status_id',
       as: 'message_status'
     });
-    // Message.belongsTo(models.message, {
-    //   foreignKey: 'parent_id',
-    //   as: 'parent'
-    // });
-    // Message.hasMany(models.message, {
-    //   foreignKey: 'parent_id',
-    //   as: 'parent'
-    // });
   }
 
   return Message;
