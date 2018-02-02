@@ -42,8 +42,8 @@ router.get('/', (req, res) => {
       }
     },
     include:[
-      { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-      { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+      { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+      { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
       { model: Status, as: 'message_status' }
     ]
   })
@@ -67,8 +67,8 @@ router.post('/', upload.array('upl', 1), (req, res) => {
     .then((message) => {
       return Message.findById(message.id, {
         include:[
-          { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-          { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+          { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+          { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
           { model: Status, as: 'message_status'}
         ]
       })
@@ -89,8 +89,8 @@ router.post('/', upload.array('upl', 1), (req, res) => {
     .then((message) => {
       return Message.findById(message.id, {
         include:[
-          { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-          { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+          { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+          { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
           { model: Status, as: 'message_status'}
         ]
       })
@@ -110,8 +110,8 @@ router.get('/:id', (req, res) => {
   let id = req.params.id;
   return Message.findById(id, {
     include:[
-      { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-      { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+      { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+      { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
       { model: Status, as: 'message_status'}
     ]
   })
@@ -137,8 +137,8 @@ router.put('/:id', (req, res) => {
       .then((message) => {
         return Message.findById(id, {
           include: [
-            { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-            { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+            { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+            { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
             { model: Status, as: 'message_status'}
           ]
         })
@@ -173,8 +173,8 @@ router.put('/:id/vote', (req, res) => {
           .then((response) => {
             return Message.findById(id, {
               include: [
-                { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-                { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+                { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+                { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
                 { model: Status, as: 'message_status'}
               ]
             })
@@ -185,8 +185,8 @@ router.put('/:id/vote', (req, res) => {
         }else{
           return Message.findById(id, {
             include: [
-              { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-              { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+              { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+              { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
               { model: Status, as: 'message_status'}
             ]
           })
@@ -210,8 +210,8 @@ router.put('/:id/vote', (req, res) => {
           .then((response) => {
             return Message.findById(id, {
               include: [
-                { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-                { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+                { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+                { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
                 { model: Status, as: 'message_status'}
               ]
             })
@@ -222,8 +222,8 @@ router.put('/:id/vote', (req, res) => {
         }else{
           return Message.findById(id, {
             include: [
-              { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-              { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+              { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+              { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
               { model: Status, as: 'message_status'}
             ]
           })
