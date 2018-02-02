@@ -239,6 +239,23 @@ router.put('/:id/vote', (req, res) => {
   });
 });
 
+router.put('/:id/inappropriate', (req, res) => {
+  let id = req.params.id;
+  return Message.findById(id)
+  .then(message => {
+    return message.update({offensive : (message.offensive + 1)}, {
+      returning: true,
+      plain: true
+    })
+    .then(message => {
+      return res.json(message);
+    })
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+});
+
 router.delete('/:id', (req, res) => {
   let id = req.params.id;
 
