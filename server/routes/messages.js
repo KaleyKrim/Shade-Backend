@@ -39,7 +39,29 @@ router.get('/', (req, res) => {
       deletedAt: null,
       offensive: {
         $lte: 3
-      }
+      },
+      $or: [
+        {
+          flag_one: {
+            //note: this will be req.user.id, but for accessing the API when we're not logged in, I'm leaving 1 as a placeholder.
+            $ne: 1
+          }
+        },
+        {
+          flag_one: null
+        }
+      ],
+      $or: [
+        {
+          flag_two: {
+            //note: this will be req.user.id, but for accessing the API when we're not logged in, I'm leaving 1 as a placeholder.
+            $ne: 1
+          }
+        },
+        {
+          flag_two: null
+        }
+      ]
     },
     include:[
       { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
