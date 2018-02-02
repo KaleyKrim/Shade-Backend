@@ -240,16 +240,45 @@ router.put('/:id/vote', (req, res) => {
 });
 
 router.put('/:id/inappropriate', (req, res) => {
+  let userId = req.user.id;
   let id = req.params.id;
+
   return Message.findById(id)
   .then(message => {
-    return message.update({offensive : (message.offensive + 1)}, {
-      returning: true,
-      plain: true
-    })
-    .then(message => {
-      return res.json(message);
-    })
+    if(message.flag_one === null){
+      return message.update({
+        offensive : (message.offensive + 1),
+        flag_one : userId
+      }, {
+        returning: true,
+        plain: true
+      })
+      .then(message => {
+        return res.json(message);
+      })
+    }else if((message.flag_two === null) && (message.flag_one != userId)){
+      return message.update({
+        offensive : (message.offensive + 1),
+        flag_two : userId
+      }, {
+        returning: true,
+        plain: true
+      })
+      .then(message => {
+        return res.json(message);
+      })
+    }else if((message.flag_three === null) && (message.flag_two != userId) && (message.flag_one != userId)){
+      return message.update({
+        offensive : (message.offensive + 1),
+        flag_three : userId
+      }, {
+        returning: true,
+        plain: true
+      })
+      .then(message => {
+        return res.json(message);
+      })
+    }
   })
   .catch((err) => {
     console.log(err);
