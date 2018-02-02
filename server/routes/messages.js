@@ -39,11 +39,33 @@ router.get('/', (req, res) => {
       deletedAt: null,
       offensive: {
         $lte: 3
-      }
+      },
+      $or: [
+        {
+          flag_one: {
+            //note: this will be req.user.id, but for accessing the API when we're not logged in, I'm leaving 1 as a placeholder.
+            $ne: 1
+          }
+        },
+        {
+          flag_one: null
+        }
+      ],
+      $or: [
+        {
+          flag_two: {
+            //note: this will be req.user.id, but for accessing the API when we're not logged in, I'm leaving 1 as a placeholder.
+            $ne: 1
+          }
+        },
+        {
+          flag_two: null
+        }
+      ]
     },
     include:[
-      { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-      { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+      { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+      { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
       { model: Status, as: 'message_status' }
     ]
   })
@@ -67,8 +89,8 @@ router.post('/', upload.array('upl', 1), (req, res) => {
     .then((message) => {
       return Message.findById(message.id, {
         include:[
-          { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-          { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+          { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+          { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
           { model: Status, as: 'message_status'}
         ]
       })
@@ -89,8 +111,8 @@ router.post('/', upload.array('upl', 1), (req, res) => {
     .then((message) => {
       return Message.findById(message.id, {
         include:[
-          { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-          { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+          { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+          { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
           { model: Status, as: 'message_status'}
         ]
       })
@@ -110,8 +132,8 @@ router.get('/:id', (req, res) => {
   let id = req.params.id;
   return Message.findById(id, {
     include:[
-      { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
-      { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+      { model: User, as: 'shader', attributes: ['username', 'id', 'status_id'] },
+      { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
       { model: Status, as: 'message_status'}
     ]
   })
@@ -137,8 +159,8 @@ router.put('/:id', (req, res) => {
       .then((message) => {
         return Message.findById(id, {
           include: [
-            { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-            { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+            { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+            { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
             { model: Status, as: 'message_status'}
           ]
         })
@@ -173,8 +195,8 @@ router.put('/:id/vote', (req, res) => {
           .then((response) => {
             return Message.findById(id, {
               include: [
-                { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-                { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+                { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+                { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
                 { model: Status, as: 'message_status'}
               ]
             })
@@ -185,8 +207,8 @@ router.put('/:id/vote', (req, res) => {
         }else{
           return Message.findById(id, {
             include: [
-              { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-              { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+              { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+              { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
               { model: Status, as: 'message_status'}
             ]
           })
@@ -210,8 +232,8 @@ router.put('/:id/vote', (req, res) => {
           .then((response) => {
             return Message.findById(id, {
               include: [
-                { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-                { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+                { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+                { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
                 { model: Status, as: 'message_status'}
               ]
             })
@@ -222,8 +244,8 @@ router.put('/:id/vote', (req, res) => {
         }else{
           return Message.findById(id, {
             include: [
-              { model: User, as: 'shader', attributes: ['username', 'id', 'emoji_id', 'status_id']},
-              { model: User, as: 'victim', attributes: ['username', 'id', 'emoji_id', 'status_id'] },
+              { model: User, as: 'shader', attributes: ['username', 'id', 'status_id']},
+              { model: User, as: 'victim', attributes: ['username', 'id', 'status_id'] },
               { model: Status, as: 'message_status'}
             ]
           })
@@ -240,16 +262,45 @@ router.put('/:id/vote', (req, res) => {
 });
 
 router.put('/:id/inappropriate', (req, res) => {
+  let userId = req.user.id;
   let id = req.params.id;
+
   return Message.findById(id)
   .then(message => {
-    return message.update({offensive : (message.offensive + 1)}, {
-      returning: true,
-      plain: true
-    })
-    .then(message => {
-      return res.json(message);
-    })
+    if(message.flag_one === null){
+      return message.update({
+        offensive : (message.offensive + 1),
+        flag_one : userId
+      }, {
+        returning: true,
+        plain: true
+      })
+      .then(message => {
+        return res.json(message);
+      })
+    }else if((message.flag_two === null) && (message.flag_one != userId)){
+      return message.update({
+        offensive : (message.offensive + 1),
+        flag_two : userId
+      }, {
+        returning: true,
+        plain: true
+      })
+      .then(message => {
+        return res.json(message);
+      })
+    }else if((message.flag_three === null) && (message.flag_two != userId) && (message.flag_one != userId)){
+      return message.update({
+        offensive : (message.offensive + 1),
+        flag_three : userId
+      }, {
+        returning: true,
+        plain: true
+      })
+      .then(message => {
+        return res.json(message);
+      })
+    }
   })
   .catch((err) => {
     console.log(err);
