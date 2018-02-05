@@ -11,7 +11,7 @@ module.exports = {
         points: 0,
         status_id: 1,
         deletedAt: null,
-        role_id: 1,
+        role_id: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -22,7 +22,7 @@ module.exports = {
         points: 0,
         status_id: 1,
         deletedAt: null,
-        role_id: 1,
+        role_id: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -33,7 +33,7 @@ module.exports = {
         points: 0,
         status_id: 1,
         deletedAt: null,
-        role_id: 1,
+        role_id: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -44,7 +44,7 @@ module.exports = {
         points: 0,
         status_id: 1,
         deletedAt: null,
-        role_id: 1,
+        role_id: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }], {});
