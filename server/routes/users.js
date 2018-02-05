@@ -15,6 +15,9 @@ const Emoji = db.emoji;
 
 router.get('/', (req, res) => {
   return User.findAll({
+    where: {
+      role_id: 1
+    },
     attributes: {
       exclude: ['password']
     }})
@@ -30,6 +33,9 @@ router.get('/', (req, res) => {
 
 router.get('/all', (req, res) => {
   return User.findAll({
+    where: {
+      role_id: 1
+    },
     attributes: {
       exclude: ['password']
     },
