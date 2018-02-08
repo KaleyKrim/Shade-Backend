@@ -5,9 +5,9 @@ module.exports = {
 
       return queryInterface.bulkInsert('users', [
       {
-        username: 'daddio',
-        password:'pa',
-        email:'dadd@io.com',
+        username: 'admin1',
+        password:'182rwk',
+        email:'backyardboiz@gmail.com',
         points: 0,
         status_id: 1,
         deletedAt: null,
@@ -16,31 +16,9 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        username: 'shmoo',
-        password: 'ss',
-        email: 'shoo@who.com',
-        points: 0,
-        status_id: 1,
-        deletedAt: null,
-        role_id: 2,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        username: 'slick_daddy',
-        password: 'wo',
-        email: 'slick@daddy.com',
-        points: 0,
-        status_id: 1,
-        deletedAt: null,
-        role_id: 2,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      },
-      {
-        username: 'slick_mama',
-        password: 'rd',
-        email: 'slick@mama.com',
+        username: 'admin2',
+        password: 'uaafwz',
+        email: 'noemail@gmail.com',
         points: 0,
         status_id: 1,
         deletedAt: null,
