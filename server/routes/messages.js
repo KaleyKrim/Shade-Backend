@@ -263,7 +263,7 @@ router.put('/:id/vote', (req, res) => {
 
 router.put('/:id/inappropriate', (req, res) => {
   let userId = req.body.user;
-  let id = req.params.id;
+  let id = req.body.id;
 
   return Message.findById(id)
   .then(message => {
