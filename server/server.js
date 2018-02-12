@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const session = require('express-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
@@ -11,6 +12,7 @@ const routes = require('./routes');
 const PORT = require(`../config/${process.env.NODE_ENV}`).PORT;
 const app = express();
 
+app.use(compression());
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(bodyParser.urlencoded({ "extended" : false }));
 app.use(bodyParser.json());

@@ -6,7 +6,9 @@ module.exports = function (sequelize, DataTypes) {
     points: {type: DataTypes.INTEGER, defaultValue: 0},
     status_id: {type: DataTypes.INTEGER, defaultValue: 1},
     deletedAt: {type: DataTypes.DATEONLY, defaultValue: null},
-    role_id: {type: DataTypes.INTEGER, defaultValue: 1}
+    role_id: {type: DataTypes.INTEGER, defaultValue: 1},
+    resetPasswordToken: {type: DataType.STRING},
+    resetPasswordExpires: {type:DataType.DATE},
   }, {
     tableName: 'users'
   });
@@ -44,7 +46,6 @@ module.exports = function (sequelize, DataTypes) {
       foreignKey: 'user_id',
       as: 'target'
     });
-  }
-
-  return User
-}
+  };
+  return User;
+};
