@@ -7,8 +7,8 @@ module.exports = function (sequelize, DataTypes) {
     status_id: {type: DataTypes.INTEGER, defaultValue: 1},
     deletedAt: {type: DataTypes.DATEONLY, defaultValue: null},
     role_id: {type: DataTypes.INTEGER, defaultValue: 1},
-    resetPasswordToken: {type: DataType.STRING},
-    resetPasswordExpires: {type:DataType.DATE},
+    resetPasswordToken: {type: DataTypes.STRING},
+    resetPasswordExpires: {type:DataTypes.DATE},
   }, {
     tableName: 'users'
   });
