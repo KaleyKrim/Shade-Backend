@@ -1,9 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
-const LocalStrategy = require('passport-local').Strategy;
-const app = express();
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const saltRounds = 12;
@@ -12,8 +9,6 @@ const sendmail = require('../config/mailer.js');
 
 const db = require('../models');
 const User = db.user;
-const Status = db.status;
-
 
 router.post('/login',
   passport.authenticate('local'), (req, res) => {
@@ -32,9 +27,7 @@ router.get('/logout', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  console.log(req.body);
   const { email, username } = req.body;
-  console.log(req.body, 'Req body');
   return User.findOne({
     where: { $or : [{ username: username }, { email: username }] }, // lets client login with username or email
     attributes: { exclude: ['password'] }
@@ -50,14 +43,12 @@ router.post('/register', (req, res) => {
     } else {
         bcrypt.genSalt(saltRounds, function(err, salt){
           bcrypt.hash(req.body.password, salt, function(err, hash){
-            console.log(hash);
             User.create({
               username: username,
               password: hash,
               email: email
             })
             .then((user) => {
-              console.log(user, 'user reg data')
               return res.json({
                 username: user.username,
                 password: user.password,
@@ -70,7 +61,6 @@ router.post('/register', (req, res) => {
       }
     })
   .catch((err) => {
-    console.log("error", err);
     return res.json({
       error : 'Oh no! Something went wrong!'
     });
@@ -104,10 +94,8 @@ router.post('/forgot', (req, res) => {
       client.sendMail(email, function(err, info){ //
         if(err){
           console.log(err);
-        }
-        else {
-        console.log('Message sent: ' + info.response);
-        req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
+        } else {
+          req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
         } // req.flash meant for express-flash
       })
       return user.update({ // sends the token + expiration date to the user DB
@@ -140,7 +128,6 @@ router.put('/reset/:token', (req, res) => {
             password: hash
           })
           .then(newPassword => {
-            console.log('Password updated');
             return res.json({
               success : true
             });
@@ -150,7 +137,6 @@ router.put('/reset/:token', (req, res) => {
     }
   })
   .catch((err) => {
-    console.log("error", err);
     return res.json({
       error : 'Oh no! Something went wrong!'
     });
