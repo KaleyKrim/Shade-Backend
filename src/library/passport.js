@@ -8,8 +8,6 @@ const Emoji = db.emoji;
 
 
 passport.serializeUser((user, done) => {
-  console.log('USER', user);
-  console.log('serializing');
   return done(null, {
     id: user.id,
     username: user.username
@@ -17,8 +15,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  console.log(user, 'DESERIAL USER');
-  console.log('deserializing');
   User.findById(user.id)
     .then(user => {
       if (!user) return done(null, false);
@@ -30,7 +26,6 @@ passport.deserializeUser((user, done) => {
 });
 
 passport.use(new LocalStrategy(function(username, password, done) {
-  console.log('passport use ==>', username, password);
   User.findOne({ where: {username: username} })
   .then((user) => {
     if(user === null){
