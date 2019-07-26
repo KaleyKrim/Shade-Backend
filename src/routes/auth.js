@@ -69,45 +69,53 @@ router.post('/register', async (req, res) => {
 
 //FORGOT password
 router.post('/forgot', (req, res) => {
-  return User.findOne({ where : { email: req.body.email } })
-  .then(user => {
-    crypto.randomBytes(20, function(err, buf) { //creates random TOKEN
-      let token = buf.toString('hex');
-      let client = nodemailer.createTransport({ //sets up nodemailer
-          service: 'SendGrid',
-          auth: {
-            user: sendmail.user, // username & password stored in config/mailer.js
-            pass: sendmail.pass  // hidden with .gitignore so as not to push up sensitive details
-          }
-        });
-      let email = {
-        to: req.body.email, // sends email to data input
-        from: 'passwordreset@shadetheapp.com', //from us
-        subject: 'Shade. Mobile App Password Reset',
-        text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-          "It's no big deal, you forgot your password. Happens all the time, really.\n\n" +
-          'Please click on the following link, or paste this into your browser:\n\n' +
-          'http://' + req.headers.host + '/reset/' + token + '\n\n' + // this link be from server side, req.headers.host can be our website html
-          'If you did not request this, someone forgot a lot more than their password! \n\n' +
-          'Simply ignore this email and your password will remain unchanged.\n'
-        }; // ^^ rewrite the "text" and make it more specific // customized
-      client.sendMail(email, function(err, info){ //
-        if(err){
-          console.log(err);
-        } else {
-          req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
-        } // req.flash meant for express-flash
-      })
-      return user.update({ // sends the token + expiration date to the user DB
-        resetPasswordToken: token,
-        resetPasswordExpires: Date.now() + 3600000 // 1 hour
-      })
-    })
-  })
-  .catch(err => {
-    console.log(err);
-    res.json(err);
-  });
+	let user;
+	try {
+		user = await User.findOne({ where: { email: req.body.email } });
+	} catch (e) {
+		return res.json({
+			error: "user doesn't exist",
+		});
+	}
+
+	const buffer = crypto.randomBytes(20);
+	const token = buffer.toString("hex");
+	const client = nodemailer.createTransport({
+		service: "SendGrid",
+		auth: {
+			user: sendmail.user,
+			pass: sendmail.pass,
+		}
+	});
+	const email = {
+		to: req.body.email, // sends email to data input
+		from: 'passwordreset@shadetheapp.com', //from us
+		subject: 'Shade. Mobile App Password Reset',
+		text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+		"It's no big deal, you forgot your password. Happens all the time, really.\n\n" +
+		'Please click on the following link, or paste this into your browser:\n\n' +
+		'http://' + req.headers.host + '/reset/' + token + '\n\n' + // this link be from server side, req.headers.host can be our website html
+		'If you did not request this, someone forgot a lot more than their password! \n\n' +
+		'Simply ignore this email and your password will remain unchanged.\n'
+	}; // ^^ rewrite the "text" and make it more specific // customized
+
+	try {
+		await client.sendMail(email);
+		req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
+	} catch (e) {
+		console.log(e);
+	}
+
+	try {
+		await user.update({ // sends the token + expiration date to the user DB
+			resetPasswordToken: token,
+			resetPasswordExpires: Date.now() + 3600000 // 1 hour
+		});
+	} catch (e) {
+		return res.json({
+			error: "failed to update user password",
+		});
+	}
 });
 
 router.put('/reset/:token', (req, res) => {
@@ -142,48 +150,3 @@ router.put('/reset/:token', (req, res) => {
     });
   });
 });
-
-
-
-
-module.exports = router;
-
-
-
-
-//edit username and password
-
-// app.put('/users/:id/edit', (req,res) => {
-//   console.log(req.body, 'edit username route');
-//   bcrypt.genSalt(saltRounds, function(err, salt){
-//     bcrypt.hash(req.body.password, salt, function(err, hash){
-//       console.log(hash);
-//       return db.User.findOne({
-//         where: {
-//           id: req.user.id
-//           }
-//         })
-//         .then(user => {
-//           return db.User.update({
-//             username: req.body.username || user.username,
-//             password: hash || user.password,
-//             email: req.body.email || user.email
-//           },
-//           {where: {
-//             id: req.user.id
-//             }
-//           })
-//           .then(response => {
-//             return db.User.findOne({
-//               where : {
-//                 id: req.user.id
-//               }
-//             })
-//             .then(updatedUser => {
-//             return res.json(updatedUser);
-//           });
-//         });
-//       });
-//     });
-//   });
-// });
