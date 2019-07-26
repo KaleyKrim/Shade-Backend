@@ -12,7 +12,6 @@ const User = db.user;
 
 router.post('/login',
   passport.authenticate('local'), (req, res) => {
-  console.log(req.user, 'req.user')
   return res.json({
     id: req.user.id,
     username: req.user.username,
