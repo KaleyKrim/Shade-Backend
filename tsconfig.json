@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "strictNullChecks": true,
+      "target": "es2018",
+      "lib": ["es2018", "dom"],
+      "newLine": "lf",
+      "outDir": "build",
+      "declaration": true,
+      "experimentalDecorators": true,
+      "noUnusedLocals": true,
+      "noImplicitReturns": true,
+      "emitDecoratorMetadata": true,
+    },
+    "include": [
+      "src/**/*.ts"
+    ]
+  }
+  
