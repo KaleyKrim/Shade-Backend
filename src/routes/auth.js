@@ -1,69 +1,70 @@
-const express = require('express');
-const passport = require('passport');
-const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
+import * as express from "express";
+import * as passport from "passport";
+import * as bcrypt from "bcrypt";
+import * as nodemailer from "nodemailer";
+
 const saltRounds = 12;
 const router = express.Router();
 const sendmail = require('../config/mailer.js');
 
-const db = require('../models');
-const User = db.user;
+import { User } from "../models";
 
-router.post('/login',
-  passport.authenticate('local'), (req, res) => {
-  return res.json({
-    id: req.user.id,
-    username: req.user.username,
-    success: true
-  });
+router.post('/login', passport.authenticate('local'), (req, res) => {
+	return res.json({
+		id: req.user.id,
+		username: req.user.username,
+		success: true
+	});
 });
 
 router.get('/logout', (req, res) => {
-  req.logout();
-  console.log('user logged out');
-  res.sendStatus(200);
+	req.logout();
+	res.sendStatus(200);
 });
 
-router.post('/register', (req, res) => {
-  const { email, username } = req.body;
-  return User.findOne({
-    where: { $or : [{ username: username }, { email: username }] }, // lets client login with username or email
-    attributes: { exclude: ['password'] }
-  })
-  .then(response => {
-    // if user does not exist, findOne will return null
-    // if user does exist, user details will be returned
-    if(response){
-      res.json({
-        error: 'sorry, that username/email is already in use!'
-      });
+// register new user
+router.post('/register', async (req, res) => {
+	const { email, username } = req.body;
 
-    } else {
-        bcrypt.genSalt(saltRounds, function(err, salt){
-          bcrypt.hash(req.body.password, salt, function(err, hash){
-            User.create({
-              username: username,
-              password: hash,
-              email: email
-            })
-            .then((user) => {
-              return res.json({
-                username: user.username,
-                password: user.password,
-                email: user.email,
-                success: true
-              });
-            });
-          });
-        });
-      }
-    })
-  .catch((err) => {
-    return res.json({
-      error : 'Oh no! Something went wrong!'
-    });
-  });
+	let user;
+	try {
+		user = await User.findOne({
+			where: { $or: [{ username }, { email: username }] },
+			attributes: { exclude: ["password"] },
+		});
+	} catch (e) {
+		return res.json({
+			error: "failed to query user",
+		});
+	}
+
+	if (user) {
+		return res.json({
+			error: "username/email already in use",
+		});
+	}
+
+	const salt = bcrypt.genSalt(saltRounds);
+	const hash = bcrypt.hash(req.body.password, salt);
+
+	try {
+		const newUser = await User.create({
+			username,
+			email,
+			password: hash,
+		});
+
+		return res.json({
+			username: newUser.username,
+			password: newUser.password,
+			email: newUser.email,
+			success: true
+		});
+	} catch (e) {
+		return res.json({
+			error: "user creation failed",
+		});
+	}
 });
 
 //FORGOT password
